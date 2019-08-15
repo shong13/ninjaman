@@ -46,16 +46,43 @@
             background-size: contain;
             position: absolute;
         }
+        .ghost{
+            background-color: black;
+            height: 40px;
+            width: 40px;
+            display: inline-block;
+            background-image: url('');
+            background-size: contain;
+            position: absolute;
+        }
     </style>
 </head>
 <body>
     <div id = "world"></div>
     <div id = "ninjaman"></div>
     <div id = "score">Score: 0</div>
+    <div id = "ghost"></div>
 </body>
 <script type="text/javascript">
     let world = []
     let rows = []
+    let worldDict = {
+        0: 'blank',
+        1: 'sushi',
+        2: 'onigiri',
+        3: 'wall'
+    }
+    let ghost = [
+        {x: 2, y: 2, url: "img/bluey.gif"},
+        {x: 3, y: 3, url: "img/pinky.gif"},
+        {x: 4, y: 4, url: "img/pumpky.gif"},
+        {x: 5, y: 5, url: "img/red.gif"}
+    ]
+    let ninjaman = {
+        x: 1,
+        y: 1
+    }
+    let score = 0;
 
     for(let i = 0; i < 10; i++){
         for(let j = 0; j < 10; j++){
@@ -79,13 +106,7 @@
         rows = []
     }
     world[1][1] = 0
-    console.log(world)
-    let worldDict = {
-        0: 'blank',
-        1: 'sushi',
-        2: 'onigiri',
-        3: 'wall'
-    }
+    
 
     function getRandomInt(max){
         return Math.floor(Math.random() * Math.floor(max));
@@ -105,18 +126,22 @@
     }
     drawWorld();
 
-    let ninjaman = {
-        x: 1,
-        y: 1
-    }
-    
+
     function drawNinjaman(){
         document.getElementById('ninjaman').style.top = `${ninjaman.y * 40}px`
         document.getElementById('ninjaman').style.left = `${ninjaman.x * 40}px`
     }
     drawNinjaman();
     
-    let score = 0;
+    function drawGhost() {
+        let content = ""
+        for(let i = 0; i<ghost.length; i++){
+            content += `<div class="ghost" style="left: ${ghost[i].x * 40}px; top: ${ghost[i].y * 40}px; background-image:url('${ghost[i].url}')"></div>`
+        }
+        document.getElementById('ghost').innerHTML = content;
+    }
+    drawGhost()
+    
 
     document.onkeydown = (e) => {
         if(e.keyCode === 37){
@@ -146,6 +171,10 @@
         }
         drawNinjaman();
         drawWorld();
+    }
+    function gameLoop() {
+        
+        setTimeout(gameLoop, 1000)
     }
 </script>
 </html>
